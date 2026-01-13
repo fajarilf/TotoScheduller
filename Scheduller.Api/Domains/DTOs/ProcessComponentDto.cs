@@ -27,6 +27,7 @@ namespace Scheduller.Api.Domains.DTOs
                 Setup = entity.Setup,
                 CycleTime = entity.CycleTime,
                 Part = PartDto.toPartResponse(entity.Part),
+                WorkCenter = WorkCenterDto.toWorkCenterResponse(entity.WorkCenter),
             };
         }
     }

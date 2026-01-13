@@ -22,8 +22,7 @@ namespace Scheduller.Api.Repositories.Implementations
         {
             return await _dbSet
                 .Include(p => p.ProcessDetails)
-                .Include(p => p.ProcessComponents)
-                    .ThenInclude(pc => pc.WorkCenter)
+                    .ThenInclude(pd => pd.Model)
                 .ToListAsync();
         }
 

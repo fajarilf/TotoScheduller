@@ -22,6 +22,8 @@ namespace Scheduller.Api.Domains.DTOs
             return new ProcessDetailResponseRelation
             {
                 Id = entity.Id,
+                Bom = entity.Bom,
+                OperationNumber = entity.OperationNumber,
                 CreatedAt = entity.CreatedAt,
                 Model = ModelDto.toModelResponse(entity.Model),
                 Part = PartDto.toPartResponse(entity.Part)
@@ -32,6 +34,8 @@ namespace Scheduller.Api.Domains.DTOs
     public class ProcessDetailResponseRelation
     {
         public int Id { get; set; }
+        public int Bom { get; set; }
+        public int OperationNumber { get; set; }
         public DateTime CreatedAt { get; set; }
         public ModelResponse Model { get; set; } = new ModelResponse();
         public PartResponse Part { get; set; } = new PartResponse();

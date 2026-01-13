@@ -28,19 +28,29 @@ builder.Services.AddScoped<PartRepository>();
 builder.Services.AddScoped<ProcessComponentRepository>();
 builder.Services.AddScoped<ProcessDetailRepository>();
 builder.Services.AddScoped<WorkCenterRepository>();
+builder.Services.AddScoped<ScheduleRepository>();
+builder.Services.AddScoped<ScheduleDetailRepository>();
 
 builder.Services.AddScoped<IModelService, ModelService>();
+builder.Services.AddScoped<IPartService, PartService>();
+builder.Services.AddScoped<IProcessComponentService, ProcessComponentService>();
+builder.Services.AddScoped<IProcessDetailService, ProcessDetailService>();
+builder.Services.AddScoped<IWorkCenterService, WorkCenterService>();
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
+builder.Services.AddScoped<IScheduleDetailService, ScheduleDetailService>();
 
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+
+//}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 //app.UseHttpsRedirection();
 
