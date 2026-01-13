@@ -43,5 +43,35 @@ namespace Scheduller.Api.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("models")]
+        public async Task<IActionResult> GetByModelId()
+        {
+            var result =await _service.GetScheduleDetailByModel();
+
+            var response = new
+            {
+                status = "Success",
+                data = result
+            };
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("models/{model_id:int}")]
+        public async Task<IActionResult> GetByModelId(int model_id)
+        {
+            var result = await _service.GetScheduleDetailByModelId(model_id);
+
+            var response = new
+            {
+                status = "Success",
+                data = result
+            };
+
+            return Ok(response);
+        }
     }
 }

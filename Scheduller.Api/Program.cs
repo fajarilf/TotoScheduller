@@ -23,6 +23,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     );
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddScoped<ModelRepository>();
 builder.Services.AddScoped<PartRepository>();
 builder.Services.AddScoped<ProcessComponentRepository>();
@@ -42,6 +53,7 @@ builder.Services.AddScoped<IScheduleDetailService, ScheduleDetailService>();
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())

@@ -27,6 +27,12 @@ namespace Scheduller.Api.Domains.DTOs
         public DateTime FinishTime { get; set; }
     }
 
+    public class ScheduleDetailResponseWithModel
+    {
+        public string ModelName { get; set; } = string.Empty;
+        public List<ScheduleDetailResponse> ScheduleDetails { get; set; } = [];
+    }
+
     public class ScheduleDetailResponse
     {
         public int Id { get; set; }
