@@ -37,6 +37,19 @@ namespace Scheduller.Api.Services.Implementations
             return [.. scheduleDetails.Select(ScheduleDetailDto.toScheduleDetailResponse)];
         }
 
+        public async Task<bool> Delete(int id)
+        {
+            var result = await _repository.DbSet
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (result == null)
+                throw new ResponseException(System.Net.HttpStatusCode.NotFound, "Schedule detail not found");
+
+            await _repository.Remove(result);
+
+            return true;
+        }
+
         public async Task<IEnumerable<ScheduleDetailResponse>> GetAllScheduleDetail()
         {
             var result = await _repository.GetAll();
