@@ -21,7 +21,7 @@ namespace Scheduller.Api.Controllers
 
             var response = new
             {
-                status = "OK",
+                status = "Success",
                 data = result
             };
 
@@ -36,8 +36,23 @@ namespace Scheduller.Api.Controllers
 
             var response = new
             {
-                status = "OK", 
+                status = "Success", 
                 data = result 
+            };
+
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("{model_id:int}")]
+        public async Task<IActionResult> Delete(int model_id)
+        {
+            await _service.Delete(model_id);
+
+            var response = new
+            {
+                status = "Success",
+                data = "OK"
             };
 
             return Ok(response);

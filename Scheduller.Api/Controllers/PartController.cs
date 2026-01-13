@@ -43,5 +43,20 @@ namespace Scheduller.Api.Controllers
 
             return Ok(response);
         }
+
+        [HttpDelete]
+        [Route("{part_id:int}")]
+        public async Task<IActionResult> Delete(int part_id)
+        {
+            await _service.Delete(part_id);
+
+            var response = new
+            {
+                status = "Success",
+                data = "OK"
+            };
+
+            return Ok(response);
+        }
     }
 }
