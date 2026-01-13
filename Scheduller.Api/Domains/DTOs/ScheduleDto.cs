@@ -19,8 +19,8 @@ namespace Scheduller.Api.Domains.DTOs
 
     public class ScheduleCreateRequest
     {
-        public int ModelId { get; set; }
-        public int Quantity { get; set; }
+        public required int ModelId { get; set; }
+        public required int Quantity { get; set; }
     }
 
     public class ScheduleUpdateRequest

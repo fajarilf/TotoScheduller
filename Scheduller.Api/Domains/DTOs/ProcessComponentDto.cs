@@ -32,6 +32,29 @@ namespace Scheduller.Api.Domains.DTOs
         }
     }
 
+    public class ProcessCompoentCreateRequest
+    {
+        public required int PartId { get; set; }
+        public required int OperationNumber { get; set; }
+        public required int WorkCenterId { get; set; }
+        public required int WorkCenterCategory { get; set; }
+        public required int BaseQuantity { get; set; }
+        public required int Setup { get; set; }
+        public required int CycleTime { get; set; }
+    }
+
+    public class ProcessCompoentUpdateRequest
+    {
+        public required int Id { get; set; }
+        public int? PartId { get; set; }
+        public int? OperationNumber { get; set; }
+        public int? WorkCenterId { get; set; }
+        public int? WorkCenterCategory { get; set; }
+        public int? BaseQuantity { get; set; }
+        public int? Setup { get; set; }
+        public int? CycleTime { get; set; }
+    }
+
     public class ProcessComponentResponse 
     {
         public int Id { get; set; }

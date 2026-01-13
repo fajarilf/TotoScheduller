@@ -26,6 +26,17 @@ namespace Scheduller.Api.Domains.DTOs
         }
     }
 
+    public class ModelCreateRequest 
+    {
+        public required string Name { get; set; }
+    }
+
+    public class ModelUpdateRequest
+    {
+        public required int Id { get; set; }
+        public string? Name { get; set; }
+    }
+
     public class ModelResponseRelation
     {
         public int Id { get; set; }

@@ -26,6 +26,17 @@ namespace Scheduller.Api.Domains.DTOs
         }
     }
 
+    public class WorkCenterCreateRequest 
+    {
+        public required string Name { get; set; }
+    }
+
+    public class WorkCenterUpdateRequest
+    {
+        public required int Id { get; set; }
+        public string? Name { get; set; }
+    }
+
     public class WorkCenterResponse
     {
         public int Id { get; set; }

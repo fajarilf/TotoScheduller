@@ -21,9 +21,21 @@ namespace Scheduller.Api.Domains.DTOs
                 Id = entity.Id,
                 Name = entity.Name,
                 CreatedAt = entity.CreatedAt,
-                ProcessDetails = [.. entity.ProcessDetails.Select(ProcessDetailDto.toProcessDetailResponse)]
+                ProcessDetails = [.. entity.ProcessDetails.Select(ProcessDetailDto.toProcessDetailResponse)],
+                ProcessComponents = [.. entity.ProcessComponents.Select(ProcessComponentDto.toProcessComponentResponse)]
             };
         }
+    }
+
+    public class PartCreateRequest
+    {
+        public required string Name { get; set; }
+    }
+
+    public class PartUpdateRequest
+    {
+        public required int Id { get; set; }
+        public string? Name { get; set; }
     }
 
     public class PartResponse
@@ -39,5 +51,6 @@ namespace Scheduller.Api.Domains.DTOs
         public string Name { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public List<ProcessDetailResponse> ProcessDetails { get; set; } = [];
+        public List<ProcessComponentResponse> ProcessComponents { get; set; } = [];
     }
 }

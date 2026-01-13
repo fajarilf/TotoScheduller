@@ -31,6 +31,23 @@ namespace Scheduller.Api.Domains.DTOs
         }
     }
 
+    public class ProcessDetailCreateRequest
+    {
+        public required int PartId { get; set; }
+        public required int ModelId { get; set; }
+        public required int OperationNumber { get; set; }
+        public required int Bom { get; set; }
+    }
+
+    public class ProcessDetailUpdateRequest
+    {
+        public required int Id { get; set; }
+        public int? PartId { get; set; }
+        public int? ModelId { get; set; }
+        public int? OperationNumber { get; set; }
+        public int? Bom { get; set; }
+    }
+
     public class ProcessDetailResponseRelation
     {
         public int Id { get; set; }
