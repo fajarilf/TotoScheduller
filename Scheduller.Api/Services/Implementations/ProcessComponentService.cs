@@ -15,6 +15,19 @@ namespace Scheduller.Api.Services.Implementations
             _repository = repository;
         }
 
+        public async Task<bool> Delete(int id)
+        {
+            var result = await _repository.DbSet
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (result == null)
+                throw new ResponseException(System.Net.HttpStatusCode.NotFound, "Process component not found");
+
+            await _repository.Remove(result);
+
+            return true;
+        }
+
         public async Task<IEnumerable<ProcessComponentResponseRelation>> GetAllProcessComponent()
         {
             var result = await _repository.GetAll();

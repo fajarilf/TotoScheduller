@@ -7,5 +7,6 @@ namespace Scheduller.Api.Services.Interfaces
     {
         Task<IEnumerable<ModelResponseRelation>> GetAllModel();
         Task<ModelResponseRelation?> GetModelById(int id);
+        Task<bool> Delete(int id);
     }
 }

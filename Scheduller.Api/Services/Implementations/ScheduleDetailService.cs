@@ -99,5 +99,15 @@ namespace Scheduller.Api.Services.Implementations
                 ScheduleDetails = [.. result.Select(ScheduleDetailDto.toScheduleDetailResponse)]
             };
         }
+
+        public Task<IEnumerable<ScheduleDetailResponseWithModel>> GetScheduleDetailByWorkCenter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ScheduleDetailResponseWithModel> GetScheduleDetailByWorkCenterId(int work_center_id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

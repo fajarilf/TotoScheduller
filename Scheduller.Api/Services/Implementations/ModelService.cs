@@ -2,6 +2,7 @@
 using Scheduller.Api.Repositories.Implementations;
 using Scheduller.Api.Services.Interfaces;
 using Scheduller.Api.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Scheduller.Api.Services.Implementations
 {
@@ -12,6 +13,19 @@ namespace Scheduller.Api.Services.Implementations
         public ModelService(ModelRepository repository)
         {
             _repository = repository;
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            var result = await _repository.DbSet
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (result == null)
+                throw new ResponseException(System.Net.HttpStatusCode.NotFound, "Model not found");
+
+            await _repository.Remove(result);
+
+            return true;
         }
 
         public async Task<IEnumerable<ModelResponseRelation>> GetAllModel()

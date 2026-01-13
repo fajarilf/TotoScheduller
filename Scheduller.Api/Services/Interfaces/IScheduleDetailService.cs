@@ -9,5 +9,8 @@ namespace Scheduller.Api.Services.Interfaces
         Task<IEnumerable<ScheduleDetailResponse>> CreateScheduleDetail(List<ScheduleDetailCreateRequest> request);
         Task<ScheduleDetailResponseWithModel> GetScheduleDetailByModelId(int model_id);
         Task<IEnumerable<ScheduleDetailResponseWithModel>> GetScheduleDetailByModel();
+        Task<ScheduleDetailResponseWithModel> GetScheduleDetailByWorkCenterId (int work_center_id);
+        Task<IEnumerable<ScheduleDetailResponseWithModel>> GetScheduleDetailByWorkCenter ();
+        Task<bool> Delete(int id);
     }
 }

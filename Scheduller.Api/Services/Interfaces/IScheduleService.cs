@@ -8,5 +8,6 @@ namespace Scheduller.Api.Services.Interfaces
         Task<ScheduleResponse> GetScheduleById(int id);
         Task<ScheduleResponse> CreateSchedule (ScheduleCreateRequest request);
         Task<ScheduleResponse> UpdateSchedule (ScheduleUpdateRequest request);
+        Task<bool> Delete(int id);
     }
 }

@@ -7,5 +7,6 @@ namespace Scheduller.Api.Services.Interfaces
         Task<IEnumerable<ProcessComponentResponseRelation>> GetAllProcessComponent();
         Task<ProcessComponentResponseRelation> GetProcessComponentById(int id);
         Task<IEnumerable<ProcessComponentResponseRelation>> GetAllProcessComponentByPartId(int part_id);
+        Task<bool> Delete (int id);
     }
 }

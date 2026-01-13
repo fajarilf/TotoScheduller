@@ -7,5 +7,6 @@ namespace Scheduller.Api.Services.Interfaces
         Task<IEnumerable<ProcessDetailResponseRelation>> GetAllProcessDetail();
         Task<ProcessDetailResponseRelation> GetProcessDetailById(int id);
         Task<IEnumerable<ProcessDetailResponseRelation>> GetAllProcessDetailByModelId(int model_id);
+        Task<bool> Delete(int id);
     }
 }
