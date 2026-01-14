@@ -19,6 +19,9 @@ namespace Scheduller.Api.Domains.Entities
         [Column("work_center_id")]
         public int WorkCenterId { get; set; }
 
+        [Column("operation_number")]
+        public int OperationNumber { get; set; }
+
         [Column("start_time")]
         public DateTime StartTime { get; set; }
 

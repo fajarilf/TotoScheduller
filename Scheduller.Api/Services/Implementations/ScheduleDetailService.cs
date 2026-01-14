@@ -27,6 +27,7 @@ namespace Scheduller.Api.Services.Implementations
             {
                 ScheduleId = d.ScheduleId,
                 PartId = d.PartId,
+                OperationNumber = d.OperationNumber,
                 WorkCenterId = d.WorkCenterId,
                 StartTime = d.StartTime,
                 FinishTime = d.FinishTime,

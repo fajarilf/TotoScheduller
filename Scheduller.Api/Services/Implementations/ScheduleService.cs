@@ -98,6 +98,7 @@ namespace Scheduller.Api.Services.Implementations
                     {
                         ScheduleId = schedule.Id,
                         PartId = item.Part.Id,
+                        OperationNumber = component.OperationNumber,
                         WorkCenterId = component.WorkCenter!.Id,
                         StartTime = start,
                         FinishTime = finish,
