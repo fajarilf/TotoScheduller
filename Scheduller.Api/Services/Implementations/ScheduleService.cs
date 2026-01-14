@@ -52,6 +52,19 @@ namespace Scheduller.Api.Services.Implementations
             if (!processDetail.Any())
                 return new ScheduleResponse();
 
+            var hasActiveSchedule = await _repository.DbSet
+                .Where(sc => sc.ModelId == request.ModelId)
+                .SelectMany(sc => sc.ScheduleDetails)
+                .AnyAsync(sd => sd.FinishTime > DateTime.Now);
+
+            if (hasActiveSchedule)
+            {
+                throw new ResponseException(
+                    System.Net.HttpStatusCode.BadRequest,
+                    "Schedule is still running for this model"
+                );
+            }
+
             var schedule = new Schedule
             {
                 ModelId = request.ModelId,
@@ -74,7 +87,11 @@ namespace Scheduller.Api.Services.Implementations
                 foreach (var component in processComponentResponse)
                 {
                     var start = nextStart;
-                    var time = component.CycleTime * request.Quantity;
+
+                    var baseQty = component.BaseQuantity <= 0 ? 1 : component.BaseQuantity;
+                    var cycleNeed = (int)Math.Ceiling((double)request.Quantity / baseQty);
+
+                    var time = cycleNeed * component.CycleTime;
                     var finish = start.AddSeconds(time);
 
                     scheduleDetails.Add(new ScheduleDetailCreateRequest
