@@ -15,6 +15,11 @@ namespace Scheduller.Api.Services.Implementations
             _repository = repository;
         }
 
+        public Task<WorkCenterResponse> CreateWorkCenter(WorkCenterCreateRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> Delete(int id)
         {
             var result = await _repository.DbSet
@@ -42,6 +47,11 @@ namespace Scheduller.Api.Services.Implementations
                 throw new ResponseException(System.Net.HttpStatusCode.NotFound, "Work center not found");
 
             return WorkCenterDto.toWorkCenterResponseRelation(result);
+        }
+
+        public Task<WorkCenterResponse> UpdateWorkCenter(WorkCenterUpdateRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

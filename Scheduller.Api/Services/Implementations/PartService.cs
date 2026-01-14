@@ -15,6 +15,11 @@ namespace Scheduller.Api.Services.Implementations
             _repository = repository;
         }
 
+        public Task<PartResponse> CreatePart(PartCreateRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> Delete(int id)
         {
             var result = await _repository.DbSet
@@ -42,6 +47,11 @@ namespace Scheduller.Api.Services.Implementations
                 throw new ResponseException(System.Net.HttpStatusCode.NotFound, "Part not found");
 
             return PartDto.toPartResponseRelation(result);
+        }
+
+        public Task<PartResponse> UpdatePart(PartUpdateRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

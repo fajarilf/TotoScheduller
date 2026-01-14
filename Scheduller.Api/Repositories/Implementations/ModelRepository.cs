@@ -18,6 +18,13 @@ namespace Scheduller.Api.Repositories.Implementations
 
         public DbSet<Model> DbSet => _dbSet;
 
+        public async Task<Model> Update(Model entity)
+        {
+            _dbSet.Update(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+
         public async Task<IEnumerable<Model>> GetAll()
         {
             return await _dbSet

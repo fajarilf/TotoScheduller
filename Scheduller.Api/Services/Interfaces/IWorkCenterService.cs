@@ -7,5 +7,7 @@ namespace Scheduller.Api.Services.Interfaces
         Task<IEnumerable<WorkCenterResponseRelation>> GetAllWorkCenter();
         Task<WorkCenterResponseRelation?> GetWorkCenterById(int id);
         Task<bool> Delete(int id);
+        Task<WorkCenterResponse> CreateWorkCenter(WorkCenterCreateRequest request);
+        Task<WorkCenterResponse> UpdateWorkCenter(WorkCenterUpdateRequest request);
     }
 }
