@@ -16,9 +16,13 @@ namespace Scheduller.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int modelId = 0
+        )
         {
-            var result = await _service.GetAllScheduleDetail();
+            var result = modelId == 0 ? 
+                await _service.GetAllScheduleDetail() : 
+                await _service.GetAllScheduleDetailForTableWithModelId(modelId);
 
             var response = new
             {

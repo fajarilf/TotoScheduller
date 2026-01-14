@@ -50,11 +50,24 @@ namespace Scheduller.Api.Services.Implementations
             return true;
         }
 
-        public async Task<IEnumerable<ScheduleDetailResponse>> GetAllScheduleDetail()
+        public async Task<IEnumerable<ScheduleDetailResponseTable>> GetAllScheduleDetail()
         {
             var result = await _repository.GetAll();
 
-            return [.. result.Select(ScheduleDetailDto.toScheduleDetailResponse)];
+            return [.. result.Select(ScheduleDetailDto.toscheduleDetailResponseTable)];
+        }
+
+        public async Task<IEnumerable<ScheduleDetailResponseTable>> GetAllScheduleDetailForTableWithModelId(int model_id)
+        {
+            var result = await _repository.DbSet
+                .Include(sd => sd.Part)
+                .Include(sd => sd.WorkCenter)
+                .Include(sd => sd.Schedule)
+                    .ThenInclude(sc => sc.Model)
+                .Where(sd => sd.Schedule.ModelId == model_id)
+                .ToListAsync();
+
+            return [.. result.Select(ScheduleDetailDto.toscheduleDetailResponseTable)];
         }
 
         public async Task<ScheduleDetailResponse> GetScheduleDetailById(int id)

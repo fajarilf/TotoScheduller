@@ -16,6 +16,20 @@ namespace Scheduller.Api.Domains.DTOs
                 FinishTime = entity.FinishTime,
             };
         }
+
+        public static ScheduleDetailResponseTable toscheduleDetailResponseTable(ScheduleDetail entity)
+        {
+            return new ScheduleDetailResponseTable
+            {
+                Id = entity.Id,
+                ScheduleId = entity.ScheduleId,
+                ModelName = entity.Schedule.Model.Name,
+                PartName = entity.Part.Name,
+                WorkCenterName = entity.WorkCenter.Name,
+                StartTime = entity.StartTime,
+                FinishTime = entity.FinishTime,
+            };
+        }
     }
 
     public class ScheduleDetailCreateRequest
@@ -43,6 +57,17 @@ namespace Scheduller.Api.Domains.DTOs
     {
         public int Id { get; set; }
         public int ScheduleId { get; set; }
+        public string PartName { get; set; } = string.Empty;
+        public string WorkCenterName { get; set; } = string.Empty;
+        public DateTime StartTime { get; set; }
+        public DateTime FinishTime { get; set; }
+    }
+
+    public class ScheduleDetailResponseTable
+    {
+        public int Id { get; set; }
+        public int ScheduleId { get; set; }
+        public string ModelName { get; set; } = string.Empty;
         public string PartName { get; set; } = string.Empty;
         public string WorkCenterName { get; set; } = string.Empty;
         public DateTime StartTime { get; set; }
