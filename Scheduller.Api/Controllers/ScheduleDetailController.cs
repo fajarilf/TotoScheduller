@@ -17,12 +17,14 @@ namespace Scheduller.Api.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll(
-            [FromQuery] int modelId = 0
+            [FromQuery] int modelId = 0,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10
         )
         {
             var result = modelId == 0 ? 
-                await _service.GetAllScheduleDetail() : 
-                await _service.GetAllScheduleDetailForTableWithModelId(modelId);
+                await _service.GetAllScheduleDetail(page, pageSize) : 
+                await _service.GetAllScheduleDetailForTableWithModelId(modelId, page, pageSize);
 
             var response = new
             {
@@ -88,6 +90,36 @@ namespace Scheduller.Api.Controllers
             {
                 status = "Success",
                 data = "OK"
+            };
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("work_centers")]
+        public async Task<IActionResult> GetByWorkCenter()
+        {
+            var result = await _service.GetScheduleDetailByWorkCenter();
+
+            var response = new
+            {
+                status = "Success",
+                data = result
+            };
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("work_centers/{work_center_id:int}")]
+        public async Task<IActionResult> GetByWorkCenterId(int work_center_id)
+        {
+            var result = await _service.GetScheduleDetailByWorkCenterId(work_center_id);
+
+            var response = new
+            {
+                status = "Success",
+                data = result
             };
 
             return Ok(response);

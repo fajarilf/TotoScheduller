@@ -28,6 +28,29 @@ namespace Scheduller.Api.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public async Task<(int totalCount, List<ScheduleDetail> items)> GetAll(
+            int page = 1,
+            int pageSize = 10
+        )
+        {
+            var query = _dbSet
+                .Include(sd => sd.Part)
+                .Include(sd => sd.WorkCenter)
+                .Include(sd => sd.Schedule)
+                    .ThenInclude(sc => sc.Model)
+                .AsNoTracking();
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(sd => sd.Id) // REQUIRED for stable paging
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (totalCount, items);
+        }
+
         public async Task<ScheduleDetail?> GetById(int id)
         {
             return await _dbSet

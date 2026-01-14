@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Scheduller.Api.Domains.DTOs;
 using Scheduller.Api.Domains.Entities;
 using Scheduller.Api.Exceptions;
 using Scheduller.Api.Repositories.Implementations;
 using Scheduller.Api.Services.Interfaces;
+using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Scheduller.Api.Services.Implementations
 {
@@ -51,24 +54,35 @@ namespace Scheduller.Api.Services.Implementations
             return true;
         }
 
-        public async Task<IEnumerable<ScheduleDetailResponseTable>> GetAllScheduleDetail()
+        public async Task<PagedResult<ScheduleDetailResponseTable>> GetAllScheduleDetail(int page, int pageSize)
         {
-            var result = await _repository.GetAll();
+            var result = await _repository.GetAll(page, pageSize);
+            var items = result.items.Select(ScheduleDetailDto.toscheduleDetailResponseTable);
 
-            return [.. result.Select(ScheduleDetailDto.toscheduleDetailResponseTable)];
+            return Pagination.Paginante(items, page, pageSize, result.totalCount);
         }
 
-        public async Task<IEnumerable<ScheduleDetailResponseTable>> GetAllScheduleDetailForTableWithModelId(int model_id)
+        public async Task<PagedResult<ScheduleDetailResponseTable>> GetAllScheduleDetailForTableWithModelId(int model_id, int page, int pageSize)
         {
-            var result = await _repository.DbSet
+            var query = _repository.DbSet
                 .Include(sd => sd.Part)
                 .Include(sd => sd.WorkCenter)
                 .Include(sd => sd.Schedule)
                     .ThenInclude(sc => sc.Model)
                 .Where(sd => sd.Schedule.ModelId == model_id)
+                .AsNoTracking();
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(sd => sd.StartTime)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
-            return [.. result.Select(ScheduleDetailDto.toscheduleDetailResponseTable)];
+            var responseItems = items.Select(ScheduleDetailDto.toscheduleDetailResponseTable);
+
+            return Pagination.Paginante(responseItems, page, pageSize, totalCount);
         }
 
         public async Task<ScheduleDetailResponse> GetScheduleDetailById(int id)
@@ -127,12 +141,30 @@ namespace Scheduller.Api.Services.Implementations
             };
         }
 
-        public Task<IEnumerable<ScheduleDetailResponseWithModel>> GetScheduleDetailByWorkCenter()
+        public async Task<IEnumerable<ScheduleDetailResponseWithWorkCenter>> GetScheduleDetailByWorkCenter()
         {
-            throw new NotImplementedException();
+            var result = await _repository.GetAll();
+            var grouped = result.GroupBy(d => d.WorkCenterId);
+
+            var response = new List<ScheduleDetailResponseWithWorkCenter>();
+
+            foreach (var group in grouped)
+            {
+                var item = group.FirstOrDefault();
+                if (item == null)
+                    continue;
+
+                response.Add(new ScheduleDetailResponseWithWorkCenter
+                {
+                    WorkCenterName = item.WorkCenter.Name,
+                    ScheduleDetails = [.. group.Select(ScheduleDetailDto.toScheduleDetailResponse)]
+                });
+            }
+
+            return response;
         }
 
-        public Task<ScheduleDetailResponseWithModel> GetScheduleDetailByWorkCenterId(int work_center_id)
+        public Task<ScheduleDetailResponseWithWorkCenter> GetScheduleDetailByWorkCenterId(int work_center_id)
         {
             throw new NotImplementedException();
         }
