@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 Scheduller.Api/appsettings.json
+/Scheduller.Api/appsettings.json
