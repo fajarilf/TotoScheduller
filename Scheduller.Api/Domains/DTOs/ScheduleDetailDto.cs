@@ -22,7 +22,7 @@ namespace Scheduller.Api.Domains.DTOs
             return new ScheduleDetailResponseTable
             {
                 Id = entity.Id,
-                ScheduleId = entity.ScheduleId,
+                Schedule = ScheduleDto.toScheduleResponse(entity.Schedule),
                 ModelName = entity.Schedule.Model.Name,
                 PartName = entity.Part.Name,
                 WorkCenterName = $"{entity.WorkCenter.Name}-{entity.OperationNumber}",
@@ -67,7 +67,7 @@ namespace Scheduller.Api.Domains.DTOs
     public class ScheduleDetailResponseTable
     {
         public int Id { get; set; }
-        public int ScheduleId { get; set; }
+        public ScheduleResponse Schedule { get; set; } = new();
         public string ModelName { get; set; } = string.Empty;
         public string PartName { get; set; } = string.Empty;
         public string WorkCenterName { get; set; } = string.Empty;

@@ -9,6 +9,6 @@ namespace Scheduller.Api.Services.Interfaces
         Task<ModelResponseRelation?> GetModelById(int id);
         Task<bool> Delete(int id);
         Task<ModelResponse> CreateModel (ModelCreateRequest request);
-        Task<ModelResponse> UpdateModel (ModelUpdateRequest request);
+        Task<ModelResponse> UpdateModel (ModelUpdateRequest request, int id);
     }
 }

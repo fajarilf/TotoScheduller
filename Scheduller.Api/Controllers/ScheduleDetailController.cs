@@ -29,7 +29,13 @@ namespace Scheduller.Api.Controllers
             var response = new
             {
                 status = "Success",
-                data = result
+                data = result.Items,
+                paging = new
+                {
+                    page = result.Page,
+                    pageSize = result.PageSize,
+                    totalCount = result.TotalCount
+                }
             };
 
             return Ok(response);

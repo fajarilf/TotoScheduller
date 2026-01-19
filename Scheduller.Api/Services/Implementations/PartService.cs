@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scheduller.Api.Domains.DTOs;
+using Scheduller.Api.Domains.Entities;
 using Scheduller.Api.Exceptions;
 using Scheduller.Api.Repositories.Implementations;
 using Scheduller.Api.Services.Interfaces;
@@ -15,9 +16,32 @@ namespace Scheduller.Api.Services.Implementations
             _repository = repository;
         }
 
-        public Task<PartResponse> CreatePart(PartCreateRequest request)
+        private async Task CheckExist(string name, int? excludeId = null)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+
+            var normalized = name.Trim().ToLowerInvariant();
+
+            var exist = await _repository.DbSet
+                .FirstOrDefaultAsync(m => m.Name.ToLower() == normalized && (!excludeId.HasValue || m.Id != excludeId.Value));
+
+            if (exist != null)
+                throw new ResponseException(System.Net.HttpStatusCode.BadRequest, "This part already exist");
+        }
+
+        public async Task<PartResponse> CreatePart(PartCreateRequest request)
+        {
+            await CheckExist(request.Name);
+
+            var part = new Part
+            {
+                Name = request.Name,
+            };
+
+            part = await _repository.SaveChanges(part);
+
+            return PartDto.toPartResponse(part);
         }
 
         public async Task<bool> Delete(int id)

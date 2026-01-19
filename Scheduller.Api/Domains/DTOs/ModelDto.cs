@@ -33,7 +33,6 @@ namespace Scheduller.Api.Domains.DTOs
 
     public class ModelUpdateRequest
     {
-        public required int Id { get; set; }
         public string? Name { get; set; }
     }
 

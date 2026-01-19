@@ -73,10 +73,10 @@ namespace Scheduller.Api.Services.Implementations
             return ModelDto.toModelResponseRelation(result);
         }
 
-        public async Task<ModelResponse> UpdateModel(ModelUpdateRequest request)
+        public async Task<ModelResponse> UpdateModel(ModelUpdateRequest request, int id)
         {
             var model = await _repository.DbSet
-                .FirstOrDefaultAsync(m => m.Id == request.Id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (model == null)
                 throw new ResponseException(System.Net.HttpStatusCode.NotFound, "Model not found");

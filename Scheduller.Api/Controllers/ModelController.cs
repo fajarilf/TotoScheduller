@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Scheduller.Api.Domains.DTOs;
 using Scheduller.Api.Services.Interfaces;
 
 namespace Scheduller.Api.Controllers
@@ -53,6 +54,35 @@ namespace Scheduller.Api.Controllers
             {
                 status = "Success",
                 data = "OK"
+            };
+
+            return Ok(response);
+        }
+
+        [HttpPatch]
+        [Route("{model_id:int}")]
+        public async Task<IActionResult> Update(ModelUpdateRequest request, int model_id)
+        {
+            var result = await _service.UpdateModel(request, model_id);
+
+            var response = new
+            {
+                status = "Success",
+                data = result
+            };
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ModelCreateRequest request)
+        {
+            var result = await _service.CreateModel(request);
+
+            var response = new
+            {
+                status = "Success",
+                data = result
             };
 
             return Ok(response);
