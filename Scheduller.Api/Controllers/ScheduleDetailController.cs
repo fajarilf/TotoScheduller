@@ -17,15 +17,19 @@ namespace Scheduller.Api.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll(
-            [FromQuery] DateTime date,
+            [FromQuery] DateTime? date,
             [FromQuery] int modelId = 0,
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10
         )
         {
+            var queryDate = date ?? DateTime.Now;
+
+            Console.WriteLine($"date: {queryDate}, model: {modelId}");
+
             var result = modelId == 0 ? 
-                await _service.GetAllScheduleDetail(date, page, pageSize) : 
-                await _service.GetAllScheduleDetailForTableWithModelId(date, modelId, page, pageSize);
+                await _service.GetAllScheduleDetail(queryDate.Date, page, pageSize) : 
+                await _service.GetAllScheduleDetailForTableWithModelId(queryDate.Date, modelId, page, pageSize);
 
             var response = new
             {
