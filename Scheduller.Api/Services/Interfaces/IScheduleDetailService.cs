@@ -4,8 +4,8 @@ namespace Scheduller.Api.Services.Interfaces
 {
     public interface IScheduleDetailService
     {
-        Task<PagedResult<ScheduleDetailResponseTable>> GetAllScheduleDetail(int page, int pageSize);
-        Task<PagedResult<ScheduleDetailResponseTable>> GetAllScheduleDetailForTableWithModelId(int model_id, int page, int pageSize);
+        Task<PagedResult<ScheduleDetailResponseTable>> GetAllScheduleDetail(DateTime date, int page, int pageSize);
+        Task<PagedResult<ScheduleDetailResponseTable>> GetAllScheduleDetailForTableWithModelId(DateTime date, int model_id, int page, int pageSize);
         Task<ScheduleDetailResponse> GetScheduleDetailById(int id);
         Task<IEnumerable<ScheduleDetailResponse>> CreateScheduleDetail(List<ScheduleDetailCreateRequest> request);
         Task<ScheduleDetailResponseWithModel> GetScheduleDetailByModelId(int model_id);

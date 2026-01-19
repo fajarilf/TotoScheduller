@@ -29,6 +29,7 @@ namespace Scheduller.Api.Repositories.Implementations
         }
 
         public async Task<(int totalCount, List<ScheduleDetail> items)> GetAll(
+            DateTime date,
             int page = 1,
             int pageSize = 10
         )
@@ -38,6 +39,7 @@ namespace Scheduller.Api.Repositories.Implementations
                 .Include(sd => sd.WorkCenter)
                 .Include(sd => sd.Schedule)
                     .ThenInclude(sc => sc.Model)
+                .Where(sd => sd.Schedule.CreatedAt!.Value.Date == date)
                 .AsNoTracking();
 
             var totalCount = await query.CountAsync();
