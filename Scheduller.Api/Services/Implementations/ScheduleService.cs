@@ -42,6 +42,22 @@ namespace Scheduller.Api.Services.Implementations
             return true;
         }
 
+        private async Task<List<ScheduleResponseWithDetails>> GetActiveSchedule()
+        {
+            var schedules = await _repository.DbSet
+                .Include(s => s.Model)
+                .Include(s => s.ScheduleDetails)
+                    .ThenInclude(sd => sd.Part)
+                .Include(s => s.ScheduleDetails)
+                    .ThenInclude(sd => sd.WorkCenter)
+                .Where(s => s.ScheduleDetails.Any(sd => sd.FinishTime > DateTime.Now))
+                .ToListAsync();
+
+            var actives = schedules.Select(ScheduleDto.toScheduleResponseWithDetails);
+
+            return [.. actives];
+        }
+
         public async Task<ScheduleResponse> CreateSchedule(ScheduleCreateRequest request)
         {
             var model = await _modelService.GetModelById(request.ModelId);
@@ -52,10 +68,14 @@ namespace Scheduller.Api.Services.Implementations
             if (!processDetail.Any())
                 return new ScheduleResponse();
 
-            var hasActiveSchedule = await _repository.DbSet
-                .Where(sc => sc.ModelId == request.ModelId)
-                .SelectMany(sc => sc.ScheduleDetails)
-                .AnyAsync(sd => sd.FinishTime > DateTime.Now);
+            var activeSchedules = await GetActiveSchedule();
+            var hasActiveSchedule = activeSchedules
+                .Any(s => s.ModelName == model.Name);
+
+            //var hasActiveSchedule = await _repository.DbSet
+            //    .Where(sc => sc.ModelId == request.ModelId)
+            //    .SelectMany(sc => sc.ScheduleDetails)
+            //    .AnyAsync(sd => sd.FinishTime > DateTime.Now);
 
             if (hasActiveSchedule)
             {
@@ -87,6 +107,17 @@ namespace Scheduller.Api.Services.Implementations
                 foreach (var component in processComponentResponse)
                 {
                     var start = nextStart;
+
+                    var ocupiedWorkCenter = hasActiveSchedule
+                        ? activeSchedules
+                            .SelectMany(s => s.ScheduleDetails)
+                            .Where(sd => sd.WorkCenterName == component.WorkCenter!.Name && sd.FinishTime > start)
+                            .OrderByDescending(sd => sd.FinishTime)
+                            .FirstOrDefault()
+                        : null;
+
+                    if (ocupiedWorkCenter != null)
+                        start = ocupiedWorkCenter.FinishTime;
 
                     var baseQty = component.BaseQuantity <= 0 ? 1 : component.BaseQuantity;
                     var cycleNeed = (int)Math.Ceiling((double)request.Quantity / baseQty);

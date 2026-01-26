@@ -110,7 +110,7 @@ namespace Scheduller.Api.Services.Implementations
                 response.Add(new ScheduleDetailResponseWithModel
                 {
                     ModelName = item.Schedule.Model.Name,
-                    ScheduleDetails = [.. group.Select(ScheduleDetailDto.toScheduleDetailResponse)]
+                    ScheduleDetails = [.. group.Select(ScheduleDetailDto.toScheduleDetailResponse).OrderBy(sd => sd.StartTime)]
                 });
             }
 
