@@ -11,6 +11,7 @@ namespace Scheduller.Api.Domains.DTOs
                 Id = entity.Id,
                 ScheduleId = entity.ScheduleId,
                 PartName = entity.Part.Name,
+                WorkCenterId = entity.WorkCenterId,
                 WorkCenterName = $"{entity.WorkCenter.Name}-{entity.OperationNumber}",
                 StartTime = entity.StartTime,
                 FinishTime = entity.FinishTime,
@@ -59,6 +60,7 @@ namespace Scheduller.Api.Domains.DTOs
         public int Id { get; set; }
         public int ScheduleId { get; set; }
         public string PartName { get; set; } = string.Empty;
+        public int WorkCenterId { get; set; }
         public string WorkCenterName { get; set; } = string.Empty;
         public DateTime StartTime { get; set; }
         public DateTime FinishTime { get; set; }
