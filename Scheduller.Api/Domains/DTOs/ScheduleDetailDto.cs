@@ -10,6 +10,7 @@ namespace Scheduller.Api.Domains.DTOs
             {
                 Id = entity.Id,
                 ScheduleId = entity.ScheduleId,
+                ModelName = entity.Schedule.Model.Name,
                 PartName = entity.Part.Name,
                 WorkCenterId = entity.WorkCenterId,
                 WorkCenterName = $"{entity.WorkCenter.Name}-{entity.OperationNumber}",
@@ -59,6 +60,7 @@ namespace Scheduller.Api.Domains.DTOs
     {
         public int Id { get; set; }
         public int ScheduleId { get; set; }
+        public string ModelName { get; set; } = string.Empty;
         public string PartName { get; set; } = string.Empty;
         public int WorkCenterId { get; set; }
         public string WorkCenterName { get; set; } = string.Empty;
