@@ -42,7 +42,7 @@ namespace Scheduller.Api.Services.Implementations
             return true;
         }
 
-        private async Task<List<ScheduleResponseWithDetails>> GetActiveSchedule()
+        private async Task<List<Schedule>> GetActiveSchedule()
         {
             var schedules = await _repository.DbSet
                 .Include(s => s.Model)
@@ -53,9 +53,7 @@ namespace Scheduller.Api.Services.Implementations
                 .Where(s => s.ScheduleDetails.Any(sd => sd.FinishTime > DateTime.Now))
                 .ToListAsync();
 
-            var actives = schedules.Select(ScheduleDto.toScheduleResponseWithDetails);
-
-            return [.. actives];
+            return schedules;
         }
 
         public async Task<ScheduleResponse> CreateSchedule(ScheduleCreateRequest request)
@@ -70,7 +68,7 @@ namespace Scheduller.Api.Services.Implementations
 
             var activeSchedules = await GetActiveSchedule();
             var hasActiveSchedule = activeSchedules
-                .Any(s => s.ModelName == model.Name);
+                .Any(s => s.ModelId == model.Id);
 
             //var hasActiveSchedule = await _repository.DbSet
             //    .Where(sc => sc.ModelId == request.ModelId)
@@ -108,13 +106,11 @@ namespace Scheduller.Api.Services.Implementations
                 {
                     var start = nextStart;
 
-                    var ocupiedWorkCenter = hasActiveSchedule
-                        ? activeSchedules
+                    var ocupiedWorkCenter = activeSchedules
                             .SelectMany(s => s.ScheduleDetails)
-                            .Where(sd => sd.WorkCenterName == component.WorkCenter!.Name && sd.FinishTime > start)
+                            .Where(sd => sd.WorkCenterId == component.WorkCenter!.Id && sd.FinishTime > start)
                             .OrderByDescending(sd => sd.FinishTime)
-                            .FirstOrDefault()
-                        : null;
+                            .FirstOrDefault();
 
                     if (ocupiedWorkCenter != null)
                         start = ocupiedWorkCenter.FinishTime;
