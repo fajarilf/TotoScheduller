@@ -54,35 +54,12 @@ namespace Scheduller.Api.Services.Implementations
             return true;
         }
 
-        public async Task<PagedResult<ScheduleDetailResponseTable>> GetAllScheduleDetail(DateTime date, int page, int pageSize)
+        public async Task<PagedResult<ScheduleDetailResponseTable>> GetAllScheduleDetail(DateTime? date, int? model_id, int page, int pageSize)
         {
-            var result = await _repository.GetAll(date, page, pageSize);
+            var result = await _repository.GetAll(date, model_id, page, pageSize);
             var items = result.items.Select(ScheduleDetailDto.toscheduleDetailResponseTable);
 
             return Pagination.Paginante(items, page, pageSize, result.totalCount);
-        }
-
-        public async Task<PagedResult<ScheduleDetailResponseTable>> GetAllScheduleDetailForTableWithModelId(DateTime date, int model_id, int page, int pageSize)
-        {
-            var query = _repository.DbSet
-                .Include(sd => sd.Part)
-                .Include(sd => sd.WorkCenter)
-                .Include(sd => sd.Schedule)
-                    .ThenInclude(sc => sc.Model)
-                .Where(sd => sd.Schedule.ModelId == model_id && sd.Schedule.CreatedAt!.Value.Date == date)
-                .AsNoTracking();
-
-            var totalCount = await query.CountAsync();
-
-            var items = await query
-                .OrderBy(sd => sd.StartTime)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            var responseItems = items.Select(ScheduleDetailDto.toscheduleDetailResponseTable);
-
-            return Pagination.Paginante(responseItems, page, pageSize, totalCount);
         }
 
         public async Task<ScheduleDetailResponse> GetScheduleDetailById(int id)
